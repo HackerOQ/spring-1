@@ -1,0 +1,35 @@
+server:
+  port: 8803
+spring:
+  application:
+    name: service-order
+
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/order?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+
+seata:
+  enabled: true
+  application-id: ${spring.application.name}
+  tx-service-group: my_test_tx_group    #此处配置自定义的seata事务分组名称
+  enable-auto-data-source-proxy: true    #开启数据库代理
+  config:
+    type: nacos
+    nacos:
+      server-addr: ${spring.cloud.nacos.discovery.server-addr}
+  #      namespace: ${spring.cloud.nacos.discovery.namespace}
+  #      group: SEATA_GROUP
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: ${spring.cloud.nacos.discovery.server-addr}
+#      namespace: ${spring.cloud.nacos.discovery.namespace}
